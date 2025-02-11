@@ -7,10 +7,6 @@ export interface Register {
   password: string;
 }
 export interface Login {
-  firstname: string;
-  lastname: string;
-  username: string;
   email: string;
-  dateOfBirth: Date;
   password: string;
 }
