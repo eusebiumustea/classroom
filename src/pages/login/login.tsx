@@ -1,27 +1,17 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import {
-  EmailInput,
-  PasswordInput,
-  Button,
-  LinkButton,
-} from "../../components";
-
-interface LoginFormInputs {
-  email: string;
-  password: string;
-}
+import { Button, Input, LinkButton, PasswordInput } from "../../components";
+import { useAuthUtils } from "../../hooks";
+import { LoginInput } from "../../models/auth";
 
 export const Login = memo(() => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>();
-
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log("Login Data:", data);
-  };
+  } = useForm<LoginInput>();
+  const { signIn } = useAuthUtils();
+  const onSubmit = useCallback(handleSubmit(signIn), []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -29,9 +19,9 @@ export const Login = memo(() => {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-700">Login</h2>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <div className="mb-4">
-            <EmailInput
+            <Input
               id="email"
               type="email"
               label="Email"

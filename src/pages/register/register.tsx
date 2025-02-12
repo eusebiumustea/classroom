@@ -1,14 +1,14 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import {
-  EmailInput,
-  PasswordInput,
-  Button,
-  LinkButton,
-} from "../../components";
+import { Button, Input, LinkButton, PasswordInput } from "../../components";
+import { useAuthUtils } from "../../hooks";
 
-interface RegisterFormInputs {
+export interface RegisterFormInputs {
+  firstName: string;
+  lastName: string;
+  username: string;
   email: string;
+  dateOfBirth: string;
   password: string;
   confirmPassword: string;
 }
@@ -17,15 +17,11 @@ export const Register = memo(() => {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     formState: { errors },
   } = useForm<RegisterFormInputs>();
-
-  const onSubmit = (data: RegisterFormInputs) => {
-    console.log("Register Data:", data);
-  };
-
-  const password = watch("password");
+  const { signUp } = useAuthUtils();
+  const onSubmit = useCallback(handleSubmit(signUp), []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
@@ -33,23 +29,64 @@ export const Register = memo(() => {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-gray-700">Register</h2>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <div className="mb-4">
-            <EmailInput
+            <Input
+              id="firstName"
+              type="text"
+              label="First Name"
+              placeholder="Enter your firstname"
+              errorMessage={errors.firstName?.message}
+              {...register("firstName", { required: "Firstname is required" })}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              id="lastName"
+              type="text"
+              label="Last Name"
+              placeholder="Enter your lastname"
+              errorMessage={errors.lastName?.message}
+              {...register("lastName", { required: "Lastname is required" })}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              id="username"
+              type="text"
+              label="Username"
+              errorMessage={errors.username?.message}
+              placeholder="Enter your username"
+              {...register("username", { required: "Username is required" })}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
               id="email"
               type="email"
               label="Email"
+              errorMessage={errors.email?.message}
               placeholder="Enter your email"
               {...register("email", { required: "Email is required" })}
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
-            )}
+          </div>
+          <div className="mb-4">
+            <Input
+              id="dateOfBirth"
+              type="date"
+              label="Date of birthday"
+              errorMessage={errors.dateOfBirth?.message}
+              placeholder="Enter your date of birthday"
+              {...register("dateOfBirth", {
+                required: "Entering your date of birthday is required",
+              })}
+            />
           </div>
           <div className="mb-4">
             <PasswordInput
               id="password"
               label="Password"
+              errorMessage={errors.password?.message}
               placeholder="Enter your password"
               {...register("password", {
                 required: "Password is required",
@@ -59,9 +96,6 @@ export const Register = memo(() => {
                 },
               })}
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
-            )}
           </div>
 
           <div className="mb-4">
@@ -69,17 +103,13 @@ export const Register = memo(() => {
               id="confirmPassword"
               label="Confirm Password"
               placeholder="Confirm Password"
+              errorMessage={errors.confirmPassword?.message}
               {...register("confirmPassword", {
                 required: "Confirm Password is required",
                 validate: (value) =>
-                  value === password || "Passwords do not match",
+                  value === getValues("password") || "Passwords do not match",
               })}
             />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm">
-                {errors.confirmPassword.message}
-              </p>
-            )}
           </div>
 
           <Button type="submit" text="Register" />

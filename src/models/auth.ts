@@ -1,12 +1,17 @@
-export interface Register {
+export interface RegisterInput {
   firstname: string;
   lastname: string;
   username: string;
   email: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   password: string;
 }
-export interface Login {
+export interface LoginInput {
   email: string;
   password: string;
+}
+export interface AuthSession {
+  email: string;
+  refreshToken: string;
+  accessToken: string;
 }
