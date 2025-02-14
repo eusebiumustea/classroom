@@ -9,18 +9,22 @@ export function useAuthUtils() {
   const signIn = useCallback(async (data: LoginInput) => {
     try {
       const result = await authentificateUser(data);
+      if (!result) {
+        return;
+      }
+      console.log(result);
 
-      if ((result && !result.refreshToken) || !result.accessToken) {
+      if (!result.refreshToken || !result.accessToken || !result.timestamp) {
         // cand apare eroare la log in
         return null;
       }
-      if (result) {
-        setAuthSession({
-          email: data.email,
-          refreshToken: result.refreshToken,
-          accessToken: result.accessToken,
-        });
-      }
+      setAuthSession({
+        email: data.email,
+        refreshToken: result.refreshToken,
+        accessToken: result.accessToken,
+        accessGenerationTime: new Date(result.timestamp).getTime(),
+        refreshGenerationTime: new Date(result.timestamp).getTime(),
+      });
     } catch (error) {}
   }, []);
   const signUp = useCallback(async (data: RegisterFormInputs) => {

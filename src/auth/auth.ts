@@ -17,6 +17,8 @@ export async function RegisterUser(
         email: user.email,
         refreshToken: authResponse.refreshToken,
         accessToken: authResponse.accessToken,
+        accessGenerationTime: new Date(authResponse.timestamp).getTime(),
+        refreshGenerationTime: new Date(authResponse.timestamp).getTime(),
       };
     }
     return null;

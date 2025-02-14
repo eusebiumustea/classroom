@@ -6,8 +6,8 @@ import {
   useEffect,
   useState,
 } from "react";
+import secureLocalStorage from "react-secure-storage";
 import { AuthSession } from "../models/auth";
-
 export const AuthSessionContext = createContext<
   [AuthSession | null, (session: AuthSession | null) => void]
 >([null, () => {}]);
@@ -16,20 +16,19 @@ export const AuthSessionProvider = memo(({ children }: PropsWithChildren) => {
   const setNewAuthSession = useCallback(
     (newAuthSession: AuthSession | null) => {
       if (newAuthSession == null) {
-        localStorage.removeItem("session");
+        secureLocalStorage.removeItem("session");
         setAuthSession(null);
         return;
       }
-      localStorage.setItem("session", JSON.stringify(newAuthSession));
+      secureLocalStorage.setItem("session", newAuthSession);
       setAuthSession(newAuthSession);
     },
     []
   );
   useEffect(() => {
-    const storedAuthSession = localStorage.getItem("session");
+    const storedAuthSession = secureLocalStorage.getItem("session");
     if (storedAuthSession) {
-      const currentAuthSession: AuthSession = JSON.parse(storedAuthSession);
-      setAuthSession(currentAuthSession);
+      setAuthSession(storedAuthSession as AuthSession);
     }
   }, []);
 

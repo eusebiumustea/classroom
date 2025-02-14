@@ -14,4 +14,6 @@ export interface AuthSession {
   email: string;
   refreshToken: string;
   accessToken: string;
+  accessGenerationTime: number;
+  refreshGenerationTime: number;
 }
