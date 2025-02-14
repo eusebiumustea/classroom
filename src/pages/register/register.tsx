@@ -25,12 +25,12 @@ export const Register = memo(() => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
-      <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">
+      <div className="w-full max-w-lg bg-white p-10 shadow-lg rounded-lg">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-700">Register</h2>
+          <h2 className="text-3xl font-bold text-gray-700">Register</h2>
         </div>
         <form onSubmit={onSubmit}>
-          <div className="mb-4">
+          <div className="grid grid-cols-2 gap-4">
             <Input
               id="firstName"
               type="text"
@@ -39,8 +39,6 @@ export const Register = memo(() => {
               errorMessage={errors.firstName?.message}
               {...register("firstName", { required: "Firstname is required" })}
             />
-          </div>
-          <div className="mb-4">
             <Input
               id="lastName"
               type="text"
@@ -50,69 +48,63 @@ export const Register = memo(() => {
               {...register("lastName", { required: "Lastname is required" })}
             />
           </div>
-          <div className="mb-4">
+          <div className="grid grid-cols-2 gap-4">
             <Input
               id="username"
               type="text"
               label="Username"
-              errorMessage={errors.username?.message}
               placeholder="Enter your username"
+              errorMessage={errors.username?.message}
               {...register("username", { required: "Username is required" })}
             />
+            <Input
+              id="dateOfBirth"
+              type="date"
+              label="Date of Birth"
+              errorMessage={errors.dateOfBirth?.message}
+              {...register("dateOfBirth", {
+                required: "Entering your date of birth is required",
+              })}
+            />
           </div>
-          <div className="mb-4">
+
+          <div>
             <Input
               id="email"
               type="email"
               label="Email"
-              errorMessage={errors.email?.message}
               placeholder="Enter your email"
+              errorMessage={errors.email?.message}
               {...register("email", { required: "Email is required" })}
             />
           </div>
-          <div className="mb-4">
-            <Input
-              id="dateOfBirth"
-              type="date"
-              label="Date of birthday"
-              errorMessage={errors.dateOfBirth?.message}
-              placeholder="Enter your date of birthday"
-              {...register("dateOfBirth", {
-                required: "Entering your date of birthday is required",
-              })}
-            />
-          </div>
-          <div className="mb-4">
-            <PasswordInput
-              id="password"
-              label="Password"
-              errorMessage={errors.password?.message}
-              placeholder="Enter your password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-            />
-          </div>
 
-          <div className="mb-4">
-            <PasswordInput
-              id="confirmPassword"
-              label="Confirm Password"
-              placeholder="Confirm Password"
-              errorMessage={errors.confirmPassword?.message}
-              {...register("confirmPassword", {
-                required: "Confirm Password is required",
-                validate: (value) =>
-                  value === getValues("password") || "Passwords do not match",
-              })}
-            />
-          </div>
+          <PasswordInput
+            id="password"
+            label="Password"
+            placeholder="Enter your password"
+            errorMessage={errors.password?.message}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
+          />
+          <PasswordInput
+            id="confirmPassword"
+            label="Confirm Password"
+            placeholder="Confirm Password"
+            errorMessage={errors.confirmPassword?.message}
+            {...register("confirmPassword", {
+              required: "Confirm Password is required",
+              validate: (value) =>
+                value === getValues("password") || "Passwords do not match",
+            })}
+          />
 
-          <Button type="submit" text="Register" />
+          <Button type={"submit"} text="Register" />
         </form>
         <LinkButton
           description="Already have an account?"
