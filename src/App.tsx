@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthGuard } from "./containers";
 import { Home, Login, Register } from "./pages";
+import { ToastContainer } from "react-toastify";
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -28,7 +30,12 @@ const appRouter = createBrowserRouter([
   },
 ]);
 function App() {
-  return <RouterProvider router={appRouter} />;
+  return (
+    <>
+      <RouterProvider router={appRouter} />;
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
+  );
 }
 
 export default App;
