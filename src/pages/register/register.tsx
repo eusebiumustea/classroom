@@ -1,7 +1,12 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Button, Input, LinkButton, PasswordInput } from "../../components";
 import { useAuthUtils } from "../../hooks";
+import {
+  clearEnrolledClassrooms,
+  clearOwnedClassrooms,
+} from "../../store/classroom-slice";
 
 export interface RegisterFormInputs {
   firstName: string;
@@ -22,7 +27,11 @@ export const Register = memo(() => {
   } = useForm<RegisterFormInputs>();
   const { signUp } = useAuthUtils();
   const onSubmit = useCallback(handleSubmit(signUp), []);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearEnrolledClassrooms());
+    dispatch(clearOwnedClassrooms());
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="w-full max-w-lg bg-white p-10 shadow-lg rounded-lg">

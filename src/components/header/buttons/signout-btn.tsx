@@ -1,16 +1,17 @@
 import { useCallback } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { useAuthSession } from "../../../hooks";
+import { endAuthSession } from "../../../store/auth-session-slice";
 
 export function SignOutButton() {
-  const [_, setAuthSession] = useAuthSession();
+  const dispatch = useDispatch();
 
   const signOut = useCallback(() => {
-    setAuthSession(null);
+    dispatch(endAuthSession());
     toast.success("You have signed out successfully!");
-  }, [setAuthSession]);
+  }, []);
 
   return (
     <button

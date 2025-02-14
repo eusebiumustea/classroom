@@ -3,6 +3,6 @@ export interface Classroom {
   name: string;
   subject: string;
   code?: string;
-  ownerEmail?: string;
+  owner?: string;
   students?: string[];
 }

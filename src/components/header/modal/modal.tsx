@@ -8,7 +8,7 @@ export interface ModalProps {
 
 export function Modal({ title, children }: ModalProps) {
   return (
-    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center  z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50">
       <div className="bg-white p-2 rounded-lg shadow-lg w-140">
         <div className="flex justify-between items-center ">
           <h2 className="p-4 text-xl font-semibold">{title}</h2>

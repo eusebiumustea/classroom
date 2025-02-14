@@ -1,4 +1,7 @@
-import { useContext } from "react";
-import { AuthSessionContext } from "../context";
+import { useSelector } from "react-redux";
+import { AuthSession } from "../models/auth";
 
-export const useAuthSession = () => useContext(AuthSessionContext);
+export const useAuthSession = () =>
+  useSelector(
+    (state: { authSessionReducer: AuthSession }) => state.authSessionReducer
+  );

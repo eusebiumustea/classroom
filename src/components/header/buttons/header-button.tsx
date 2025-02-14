@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 export interface ButtonProps {
   onClick: () => void;
   variant?: "primary" | "secondary";
-  text?: string;
   type?: "button" | "submit" | "reset";
   children?: ReactNode;
   className?: string;
@@ -12,15 +11,15 @@ export interface ButtonProps {
 export function ButtonHeader({
   onClick,
   variant = "primary",
-  text,
   children,
   type = "button",
   iconLeft,
   iconRight,
+  className,
 }: ButtonProps & { iconLeft?: ReactNode; iconRight?: ReactNode }) {
-  const baseStyles = "py-2 px-4 rounded focus:outline-none transition";
+  const baseStyles = `py-2 cursor-pointer px-5 rounded focus:outline-none ${className}`;
   const variants: Record<"primary" | "secondary", string> = {
-    primary: "text-black cursor-pointer",
+    primary: "text-black",
     secondary: "bg-gray-200 text-gray-700 hover:bg-gray-300",
   };
 
@@ -30,9 +29,9 @@ export function ButtonHeader({
       onClick={onClick}
       className={`${baseStyles} ${variants[variant]}`}
     >
-      <div className="flex items-center gap-2">
+      <div className="w-full flex flex-row items-center gap-2">
         {iconLeft}
-        <span>{text || children}</span>
+        {children}
         {iconRight}
       </div>
     </button>

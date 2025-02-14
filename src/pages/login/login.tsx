@@ -1,8 +1,13 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Button, Input, LinkButton, PasswordInput } from "../../components";
 import { useAuthUtils } from "../../hooks";
 import { LoginInput } from "../../models/auth";
+import {
+  clearEnrolledClassrooms,
+  clearOwnedClassrooms,
+} from "../../store/classroom-slice";
 
 export const Login = memo(() => {
   const {
@@ -12,7 +17,11 @@ export const Login = memo(() => {
   } = useForm<LoginInput>();
   const { signIn } = useAuthUtils();
   const onSubmit = useCallback(handleSubmit(signIn), []);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearEnrolledClassrooms());
+    dispatch(clearOwnedClassrooms());
+  }, []);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">

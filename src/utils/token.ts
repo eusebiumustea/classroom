@@ -13,8 +13,6 @@ export async function refreshAccessToken(validToken: string) {
     }
     return null;
   } catch (error) {
-    console.log(error);
-
     return null;
   }
 }

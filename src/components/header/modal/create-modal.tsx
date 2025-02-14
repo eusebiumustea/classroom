@@ -1,18 +1,38 @@
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 
+import { useDispatch } from "react-redux";
+import { useAuthentificationRequest } from "../../../hooks";
+import { Classroom } from "../../../models/classroom";
+import { setOwnedClassrooms } from "../../../store/classroom-slice";
+import { ButtonHeader } from "../buttons";
 import { InputHeader } from "../input-header";
 import { Modal } from "./modal";
-import { ButtonHeader } from "../buttons";
 
-export function CreateClassModal({ onClose }: { onClose: () => void }) {
+export const CreateClassModal = memo(({ onClose }: { onClose: () => void }) => {
   const [courseName, setCourseName] = useState("");
-  const [section, setSection] = useState("");
   const [subject, setSubject] = useState("");
-  const [room, setRoom] = useState("");
+  const dispatch = useDispatch();
+  const request = useAuthentificationRequest();
 
+  const onSubmit = useCallback(async () => {
+    try {
+      const res = await request({
+        url: "/create-classroom",
+        method: "POST",
+        data: { subject, name: courseName } as Classroom,
+      });
+      if (!res || !res.data.id) {
+        return;
+      }
+      dispatch(setOwnedClassrooms([res.data]));
+    } catch (error) {
+    } finally {
+      onClose();
+    }
+  }, [subject, courseName]);
   return (
     <Modal onClose={onClose} title="Create Course">
-      <form>
+      <form className="flex flex-col gap-6">
         <InputHeader
           id="courseName"
           value={courseName}
@@ -20,22 +40,23 @@ export function CreateClassModal({ onClose }: { onClose: () => void }) {
         >
           Course Name
         </InputHeader>
-        <InputHeader id="section" value={section} onChange={setSection}>
-          Section
-        </InputHeader>
+
         <InputHeader id="subject" value={subject} onChange={setSubject}>
           Subject
         </InputHeader>
-        <InputHeader id="room" value={room} onChange={setRoom}>
-          Room
-        </InputHeader>
+
         <div className="flex justify-end gap-2 mt-4">
           <ButtonHeader onClick={onClose} variant="secondary">
             Cancel
           </ButtonHeader>
-          <ButtonHeader>Create</ButtonHeader>
+          <ButtonHeader
+            className="hover:backdrop-brightness-90"
+            onClick={onSubmit}
+          >
+            Create
+          </ButtonHeader>
         </div>
       </form>
     </Modal>
   );
-}
+});
