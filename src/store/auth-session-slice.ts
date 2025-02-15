@@ -4,7 +4,9 @@ import { AuthSession } from "../models/auth";
 
 const authSession = createSlice({
   name: "auth-session",
-  initialState: () => secureLocalStorage.getItem("session") as AuthSession,
+  initialState: () => {
+    return secureLocalStorage.getItem("session") as AuthSession;
+  },
   reducers: {
     setAccessToken: (
       state,

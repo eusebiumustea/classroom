@@ -16,7 +16,7 @@ export const ClassroomPage = memo(() => {
   //     console.log(res);
 
   //     if (!res || !res.data?.id) return;
-  //     setClassrooom(res.data);
+  //     // setClassrooom(res.data);
   //   } catch (error) {
   //     console.log(error);
   //   }
